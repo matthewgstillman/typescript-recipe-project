@@ -55,44 +55,22 @@ const RandomRecipe: FC = () => {
           {
             randomMetaTitle: "",
             randomMetaSourceUrl: "",
-            randomMetaReadyInMinutes: 0,
+            randomMetaReadyInMinutes: "",
             randomMetaImage: "",
             randomMetaSummary: "",
             randomMetaInstructions: "",
+            randomMetaRecipe: "",
           },
         ];
-        // {
-        //   data.map(
-        //     (item: {
-        //       title: string;
-        //       sourceUrl: string;
-        //       readyInMinutes: number;
-        //       image: string;
-        //       summary: string;
-        //       instructions: string;
-        //     }) => {
-        //       randomMetaArray.push({
-        //         randomMetaTitle: item.title,
-        //         randomMetaSourceUrl: item.sourceUrl,
-        //         randomMetaReadyInMinutes: item.readyInMinutes,
-        //         randomMetaImage: item.image,
-        //         randomMetaSummary: item.summary,
-        //         randomMetaInstructions: item.instructions,
-        //       });
-        //     }
-        //   );
-        //   setRandomRecipeDataMeta(randomMetaArray);
-        // }
+
         {
           extendedIngredients.map((ingredient: { original: string }) => {
             randomRecipeArray.push({ ingredientString: ingredient.original });
           });
-          setRandomRecipe([...randomRecipeArray]);
+          setRandomRecipe(randomRecipeArray);
         }
-        console.log(randomRecipeArray);
-        console.log(randomRecipe);
-        // {
-        // }
+        {
+        }
         // for (let i = 0; i < data["recipes"][0]["extendedIngredients"]; i++) {
         //   // console.log(data["recipes"][0]["extendedIngredients"][i]["original"]);
         // }
