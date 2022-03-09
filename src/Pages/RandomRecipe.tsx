@@ -49,6 +49,7 @@ const RandomRecipe: FC = () => {
   const handleCuisineChange = (event: FormEvent<HTMLSelectElement>) => {
     const inputValue: string = event.currentTarget.value;
     console.log(inputValue);
+    setCuisineType(event.currentTarget.value);
     setUrl(
       `https://api.spoonacular.com/recipes/random?apiKey=${apiKey}&number=1&tags=${inputValue}`
     );
