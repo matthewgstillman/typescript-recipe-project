@@ -6,6 +6,7 @@ import Home from "./Pages/Home";
 import About from "./Pages/About";
 import RandomRecipe from "./Pages/RandomRecipe";
 import MealPlanner from "./Pages/MealPlanner";
+import "bootstrap/dist/css/bootstrap.min.css";
 
 export interface IApplicationProps {}
 

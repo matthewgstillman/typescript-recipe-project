@@ -1,4 +1,6 @@
-import React, { useState, FC } from "react";
+import React, { useState, FC, FormEvent } from "react";
+import NavBarComponent from "./NavBarComponent";
+
 interface Meal {
   id: number;
   imageType: string;
@@ -17,7 +19,6 @@ interface Nutrients {
 
 const MealPlanner: FC = () => {
   const apiKey: string | undefined = process.env.REACT_APP_API_KEY;
-  console.log(`API key is ${apiKey}`);
   const [mealData, setMealData] = useState<Meal[]>([
     {
       id: 1084681,
@@ -44,58 +45,104 @@ const MealPlanner: FC = () => {
   );
   console.log(`URL is ${url}`);
 
+  const dietFormatDictionary = {
+    none: "None",
+    "gluten-free": "Gluten Free",
+    keto: "Keto",
+    vegetarian: "Vegetarian",
+    "lacto-vegetarian": "Lacto Vegetarian",
+    "ovo-vegetarian": "Ovo Vegetarian",
+    paleo: "Paleo",
+    primal: "Primal",
+    pescetarian: "Pescetarian",
+    vegan: "Vegan",
+    whole30: "Whole 30",
+  };
+
   const getMealData = () => {
     console.log(`Calories: ${calories}, Diet: ${dietType}`);
     setMealPlanSubmitted(true);
-    fetch(url)
+    fetch(
+      `https://api.spoonacular.com/mealplanner/generate?apiKey=${apiKey}&timeFrame=day&targetCalories=${calories}&diet=${dietType}`
+    )
       .then((response) => response.json())
       .then((data) => {
+        // setMealData(data);
         console.log(data);
-        setMealData([...data["meals"]]);
-        setNutrientData([...data["nutrients"]]);
-        console.log(data["meals"]);
       })
       .catch(() => {
-        console.error("error");
+        console.log("error");
       });
   };
 
-  for (let i = 0; i < mealData.length; i++) {
-    console.log(mealData[i]);
-  }
+  const handleCalorieChange = (event: FormEvent<HTMLSelectElement>) => {
+    console.log(event.currentTarget.value);
+    // setCalories(event.currentTarget.value);
+    setUrl(
+      `https://api.spoonacular.com/recipes/random?apiKey=${apiKey}&number=1&tags=${event.currentTarget.value}&diet=${dietType}`
+    );
+    console.log(`URL is now: ${url}\nCalorie numbe is now: ${calories}`);
+    getMealData();
+  };
 
-  for (const [key, value] of Object.entries(mealData[0])) {
-    console.log(`${key}: ${value}`);
-  }
+  const handleDietChange = (event: FormEvent<HTMLSelectElement>) => {
+    console.log(event.currentTarget.value);
+    setDietType(event.currentTarget.value);
+    setUrl(
+      `https://api.spoonacular.com/recipes/random?apiKey=${apiKey}&number=1&tags=${calories}&diet=${dietType}`
+    );
+  };
+
   return (
     <div>
-      <h1>This is the Random Recipe Page</h1>
-      <h2>URL is {url}</h2>
-      <button onClick={getMealData}>Get Meal Data</button>
-      {mealData &&
-        mealData.map((meal) => {
-          {
-            return (
-              <div>
-                <h1>
-                  <a href={meal.sourceUrl}>{meal.title}</a>
-                </h1>
-              </div>
-            );
-          }
-        })}
-      {nutrientData &&
-        nutrientData.map((nutrients) => {
-          return (
-            <div>
-              <h1>Daily Nutrients</h1>
-              <h4>Calories: {nutrients.calories}</h4>
-              <h4>Protein: {nutrients.calories} grams</h4>
-              <h4>Fat: {nutrients.fat} grams</h4>
-              <h4>Carbohydrates: {nutrients.carbohydrates} grams</h4>
-            </div>
-          );
-        })}
+      <NavBarComponent />
+      <section className="controls">
+        <h1 className="mealPlanHeader">Meal Plan</h1>
+        <h3>
+          Create a Daily Meal Plan by Providing Your Calories and Diet Type
+        </h3>
+        <h3>Desired Daily Calories (1500-4000)</h3>
+        <select onChange={(e) => handleCalorieChange(e)}>
+          <option value={1500}>1500</option>
+          <option value={1750}>1750</option>
+          <option value={2000}>2000</option>
+          <option value={2250}>2250</option>
+          <option value={2500}>2500</option>
+          <option value={2750}>2750</option>
+          <option value={3000}>3000</option>
+          <option value={3250}>3250</option>
+          <option value={3500}>3500</option>
+          <option value={3750}>3750</option>
+          <option value={4000}>4000</option>
+        </select>
+        <br />
+        <h3>Add dietary restrictions (Optional)</h3>
+        <select placeholder="Diet Type" onChange={handleDietChange}>
+          <option value="">None</option>
+          <option value="gluten-free">Gluten Free</option>
+          <option value="keto">Keto</option>
+          <option value="vegetarian">Vegetarian</option>
+          <option value="lacto-vegetarian">Lacto-Vegetarian</option>
+          <option value="ovo-vegetarian">Ovo-Vegetarian</option>
+          <option value="paleo">Paleo</option>
+          <option value="primal">Primal</option>
+          <option value="pescatarian">Pescatarian</option>
+          <option value="vegan">Vegan</option>
+          <option value="whole30">Whole 30</option>
+        </select>
+        <br />
+        <button onClick={getMealData}>Get Daily Meal Plan</button>
+        <br />
+        <br />
+        <h1>
+          {/* {calories && dietType !== "none" && mealPlanSubmitted ? (
+            `${calories} Calorie ${dietFormatDictionary[dietType]} Meal Plan`
+          ) : (
+            <></>
+          )} */}
+        </h1>
+        {/* {mealData && <MealList mealData={mealData} />} */}
+      </section>
     </div>
   );
 };
