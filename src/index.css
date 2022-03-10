@@ -169,3 +169,15 @@ a:hover {
 .homeHeaderImage {
   margin-top: 56px;
 }
+
+.selectHeader {
+  text-align: center;
+}
+
+.selectForm {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  width: 50%;
+  margin: 0 auto;
+}

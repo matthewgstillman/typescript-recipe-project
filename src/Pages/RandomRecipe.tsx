@@ -62,12 +62,25 @@ const RandomRecipe: FC = () => {
         // console.log(titleText);
         const extendedIngredients = data["recipes"][0]["extendedIngredients"];
         const randomRecipeArray = [{ ingredientString: "" }];
+        const randomRecipeDataMeta = [
+          {
+            randomMetaTitle: "",
+            randomMetaSourceUrl: "",
+            randomMetaReadyInMinutes: "",
+            randomMetaImage: "",
+            randomMetaSummary: "",
+            randomMetaInstructions: "",
+          },
+        ];
         {
           extendedIngredients.map((ingredient: { original: string }) => {
             randomRecipeArray.push({ ingredientString: ingredient.original });
           });
           setRandomRecipe(randomRecipeArray);
         }
+        // randomRecipeDataMeta.push([{
+
+        // }])
         setRandomRecipeDataMeta([
           {
             randomMetaTitle: data[0]["recipes"]["title"],
@@ -90,8 +103,10 @@ const RandomRecipe: FC = () => {
       <NavBarComponent />
       <Container>
         <h1 className="randomRecipeHeader">Random Recipe Data</h1>
-        <h3>Select Cuisine and Meal Type (Optional)</h3>
-        <select onChange={(e) => handleCuisineChange(e)}>
+        <h3 className="selectHeader">
+          Select Cuisine and Meal Type (Optional)
+        </h3>
+        <select className="selectForm" onChange={(e) => handleCuisineChange(e)}>
           <option value="" disabled selected>
             Select cuisine type
           </option>
