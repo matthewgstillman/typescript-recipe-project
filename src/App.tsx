@@ -6,6 +6,7 @@ import Home from "./Pages/Home";
 import About from "./Pages/About";
 import RandomRecipe from "./Pages/RandomRecipe";
 import MealPlanner from "./Pages/MealPlanner";
+import AxiosRandomRecipe from "./Pages/AxiosRandomRecipe";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 export interface IApplicationProps {}
@@ -18,6 +19,7 @@ const App: FunctionComponent<IApplicationProps> = (props) => {
         <Route path="/about" element={<About />} />
         <Route path="/random" element={<RandomRecipe />} />
         <Route path="/mealplanner" element={<MealPlanner />} />
+        <Route path="/axios" element={<AxiosRandomRecipe />} />
       </Routes>
     </BrowserRouter>
   );

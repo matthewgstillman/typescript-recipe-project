@@ -172,55 +172,22 @@ const BackupRandomRecipe: FC = () => {
 
 export default BackupRandomRecipe;
 
-// {
-// }
-// for (let i = 0; i < data["recipes"][0]["extendedIngredients"]; i++) {
-//   // console.log(data["recipes"][0]["extendedIngredients"][i]["original"]);
-// }
-// setRandomRecipe({
-//   ...data["recipes"][0]["extendedIngredients"],
+// randomRecipeDataMetaArray.push({
+//   randomMetaTitle: data[0]["recipes"]["title"],
+//   randomMetaSourceUrl: data[0]["recipes"]["sourceUrl"],
+//   randomMetaReadyInMinutes: data[0]["recipes"]["readyInMinutes"],
+//   randomMetaImage: data[0]["recipes"]["image"],
+//   randomMetaSummary: data[0]["recipes"]["summary"],
+//   randomMetaInstructions: data[0]["recipes"]["instructions"],
 // });
-// for (
-//   let i = 0;
-//   i < data["recipes"][0]["extendedIngredients"].length;
-//   i++
-// ) {
-//   console.log(data["recipes"][0]["extendedIngredients"][i]);
-// }
-
-// const randomMetaArray = [
+// setRandomRecipeDataMeta(randomRecipeDataMetaArray);
+// setRandomRecipeDataMeta([
 //   {
-//     randomMetaTitle: "",
-//     randomMetaSourceUrl: "",
-//     randomMetaReadyInMinutes: "",
-//     randomMetaImage: "",
-//     randomMetaSummary: "",
-//     randomMetaInstructions: "",
-//     randomMetaRecipe: "",
+//     randomMetaTitle: data[0]["recipes"]["title"],
+//     randomMetaSourceUrl: data[0]["recipes"]["sourceUrl"],
+//     randomMetaReadyInMinutes: data[0]["recipes"]["readyInMinutes"],
+//     randomMetaImage: data[0]["recipes"]["image"],
+//     randomMetaSummary: data[0]["recipes"]["summary"],
+//     randomMetaInstructions: data[0]["recipes"]["instructions"],
 //   },
-// ];
-// {
-//   data.map(
-//     (random: {
-//       title: string;
-//       sourceUrl: string;
-//       readyInMinutes: number;
-//       image: string;
-//       summary: string;
-//       instructions: string;
-//     }) => {
-//       // setRandomRecipeDataMeta([
-//       //   {
-//       //     randomMetaTitle: random["recipes"][0]["title"],
-//       //     randomMetaSourceUrl: random["recipes"][0]["sourceUrl"],
-//       //     randomMetaReadyInMinutes:
-//       //     random["recipes"][0]["readyInMinutes"],
-//       //     randomMetaImage: random["recipes"][0]["image"],
-//       //     randomMetaSummary: random["recipes"][0]["summary"],
-//       //     randomMetaInstructions: random["recipes"][0]["instructions"],
-//       //     // randomMetaRecipe?: Recipe | "";
-//       //   },
-//       // ]);
-//     }
-//   );
-// }
+// ]);

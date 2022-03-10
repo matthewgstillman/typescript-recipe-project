@@ -61,27 +61,18 @@ const RandomRecipe: FC = () => {
         // const titleText = data["recipes"][0]["title"];
         // console.log(titleText);
         const recipe = data["recipes"];
-        console.log(recipe);
-        const title = recipe[0]["title"];
-        const sourceUrl = recipe[0]["sourceUrl"];
-        const readyInMinutes = recipe[0]["readyInMinutes"];
-        const image = recipe[0]["image"];
-        const summary = recipe[0]["summary"];
-        const instructions = recipe[0]["instructions"];
-        console.log(`Instructions: ${instructions}`);
         const extendedIngredients = data["recipes"][0]["extendedIngredients"];
         const randomRecipeArray = [{ ingredientString: "" }];
         const randomRecipeDataMetaArray = [
           {
-            randomMetaTitle: title,
-            randomMetaSourceUrl: sourceUrl,
-            randomMetaReadyInMinutes: readyInMinutes,
-            randomMetaImage: image,
-            randomMetaSummary: summary,
-            randomMetaInstructions: instructions,
+            randomMetaTitle: "",
+            randomMetaSourceUrl: "",
+            randomMetaReadyInMinutes: "",
+            randomMetaImage: "",
+            randomMetaSummary: "",
+            randomMetaInstructions: "",
           },
         ];
-        setRandomRecipeDataMeta(randomRecipeDataMetaArray);
         // {
         //   randomRecipeDataMetaArray.push({
         //     randomMetaTitle: data[0]["recipes"]["title"],
@@ -117,38 +108,6 @@ const RandomRecipe: FC = () => {
         //   )
         // });
         // console.log(randomRecipeDataMetaArray);
-        return data;
-      })
-      .then((data) => {
-        console.log(data);
-        // const randomRecipeDataMetaArray = [
-        //   {
-        //     randomMetaTitle: "",
-        //     randomMetaSourceUrl: "",
-        //     randomMetaReadyInMinutes: "",
-        //     randomMetaImage: "",
-        //     randomMetaSummary: "",
-        //     randomMetaInstructions: "",
-        //   },
-        // ];
-        // randomRecipeDataMetaArray.push({
-        //   randomMetaTitle: data[0]["recipes"]["title"],
-        //   randomMetaSourceUrl: data[0]["recipes"]["sourceUrl"],
-        //   randomMetaReadyInMinutes: data[0]["recipes"]["readyInMinutes"],
-        //   randomMetaImage: data[0]["recipes"]["image"],
-        //   randomMetaSummary: data[0]["recipes"]["summary"],
-        //   randomMetaInstructions: data[0]["recipes"]["instructions"],
-        // });
-        setRandomRecipeDataMeta([
-          {
-            randomMetaTitle: data[0]["recipes"]["title"],
-            randomMetaSourceUrl: data[0]["recipes"]["sourceUrl"],
-            randomMetaReadyInMinutes: data[0]["recipes"]["readyInMinutes"],
-            randomMetaImage: data[0]["recipes"]["image"],
-            randomMetaSummary: data[0]["recipes"]["summary"],
-            randomMetaInstructions: data[0]["recipes"]["instructions"],
-          },
-        ]);
       })
       .catch(() => {
         console.error("error");
