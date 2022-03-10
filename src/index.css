@@ -125,11 +125,20 @@ a:hover {
 
 .randomRecipeButton {
   margin-bottom: 25px;
+  margin: 0 auto;
+  display: block;
 }
 
-.randomMetaImage {
+/* .randomMetaImage {
   width: 50%;
   margin: 0 auto;
+} */
+
+.randomMetaImage {
+  display: block;
+  width: 60%;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .instructionsParagraph {
@@ -180,4 +189,8 @@ a:hover {
   text-align: center;
   width: 50%;
   margin: 0 auto;
+}
+
+.readyInHeader {
+  text-align: center;
 }

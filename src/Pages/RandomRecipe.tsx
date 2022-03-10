@@ -42,18 +42,17 @@ const RandomRecipe: FC = () => {
 
   const handleCuisineChange = (event: FormEvent<HTMLSelectElement>) => {
     const inputValue: string = event.currentTarget.value;
-    console.log(inputValue);
+    console.log(event.currentTarget.value);
     setCuisineType(event.currentTarget.value);
     setUrl(
       `https://api.spoonacular.com/recipes/random?apiKey=${apiKey}&number=1&tags=${inputValue}`
     );
     // setCuisineType(inputValue);
     console.log(`URL is now: ${url}\nCuisine type is now: ${cuisineType}`);
-    getRandomRecipe();
+    // getRandomRecipe();
   };
 
   const getRandomRecipe = () => {
-    // setCuisineType(event: FormEvent<HTMLSelectElement);
     fetch(url)
       .then((response) => response.json())
       .then((data) => {
@@ -126,10 +125,10 @@ const RandomRecipe: FC = () => {
           <option value="vietnamese">Vietnamese</option>
         </select>
         <br></br>
-        <br></br>
         <button className="randomRecipeButton" onClick={getRandomRecipe}>
           Get Random Recipe
         </button>
+        <br></br>
         {randomRecipeDataMeta &&
           randomRecipeDataMeta.map((randomMeta) => {
             return (
@@ -140,7 +139,7 @@ const RandomRecipe: FC = () => {
                       {randomMeta.randomMetaTitle}
                     </h1>
                   </a>
-                  <h6>
+                  <h6 className="readyInHeader">
                     Ready in {randomMeta.randomMetaReadyInMinutes} minutes
                   </h6>
                   <img
