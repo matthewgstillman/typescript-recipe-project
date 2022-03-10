@@ -181,7 +181,6 @@ const MealPlanner: FC = () => {
             <></>
           )} */}
         </h1>
-        {/* {mealData && <MealList mealData={mealData} />} */}
         {/* {mealData && mealData.map((meal)) => {
          return(
           <h1>{meal.id}</h1>
@@ -192,7 +191,9 @@ const MealPlanner: FC = () => {
           return (
             <div>
               <h1>Meal Plan Nutrients</h1>
-              {calories && dietType !== null ? (
+              {calories !== null &&
+              dietType !== "" &&
+              mealPlanSubmitted == true ? (
                 <h6>
                   {calories} calorie {dietType} meal plan
                 </h6>

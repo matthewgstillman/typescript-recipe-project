@@ -7,12 +7,12 @@ export interface Recipe {
 }
 
 export interface RandomMetaRecipe {
-  randomMetaTitle: string | "";
-  randomMetaSourceUrl: string | "";
-  randomMetaReadyInMinutes: number | "";
-  randomMetaImage: string | "";
-  randomMetaSummary: string | "";
-  randomMetaInstructions: string | "";
+  title: string | "";
+  sourceUrl: string | "";
+  readyInMinutes: number | null;
+  image: string | "";
+  summary: string | "";
+  instructions: string | "";
   // randomMetaRecipe?: Recipe | "";
 }
 
@@ -22,7 +22,7 @@ const RandomRecipe: FC = () => {
   const [cuisineType, setCuisineType] = useState<string | "">("");
   // const [mealType, setMealType] = useState<string | "">("");
   const [url, setUrl] = useState<string>(
-    `https://api.spoonacular.com/recipes/random?apiKey=${apiKey}&number=1&tags=${cuisineType}`
+    `https://api.spoonacular.com/recipes/random?apiKey=${apiKey}&number=3&tags=${cuisineType}`
   );
   const [randomRecipe, setRandomRecipe] = useState<Recipe[]>([
     { ingredientString: "" },
@@ -31,12 +31,12 @@ const RandomRecipe: FC = () => {
     RandomMetaRecipe[]
   >([
     {
-      randomMetaTitle: "",
-      randomMetaSourceUrl: "",
-      randomMetaReadyInMinutes: "",
-      randomMetaImage: "",
-      randomMetaSummary: "",
-      randomMetaInstructions: "",
+      title: "",
+      sourceUrl: "",
+      readyInMinutes: null,
+      image: "",
+      summary: "",
+      instructions: "",
     },
   ]);
   const [recipeTitle, setRecipeTitle] = useState<string | "">("");
@@ -46,11 +46,9 @@ const RandomRecipe: FC = () => {
     console.log(event.currentTarget.value);
     setCuisineType(event.currentTarget.value);
     setUrl(
-      `https://api.spoonacular.com/recipes/random?apiKey=${apiKey}&number=1&tags=${inputValue}`
+      `https://api.spoonacular.com/recipes/random?apiKey=${apiKey}&number=3&tags=${inputValue}`
     );
-    // setCuisineType(inputValue);
     console.log(`URL is now: ${url}\nCuisine type is now: ${cuisineType}`);
-    // getRandomRecipe();
   };
 
   const getRandomRecipe = () => {
@@ -58,51 +56,78 @@ const RandomRecipe: FC = () => {
       .then((response) => response.json())
       .then((data) => {
         console.log(data);
-        // const titleText = data["recipes"][0]["title"];
-        // console.log(titleText);
-        const recipe = data["recipes"];
-        console.log(recipe);
-        const title = recipe[0]["title"];
-        const sourceUrl = recipe[0]["sourceUrl"];
-        const readyInMinutes = recipe[0]["readyInMinutes"];
-        const image = recipe[0]["image"];
-        const summary = recipe[0]["summary"];
-        const instructions = recipe[0]["instructions"];
-        console.log(`Instructions: ${instructions}`);
+        const recipes = data["recipes"];
+        console.log(recipes);
+        const randomRecipeDataMetaArray: React.SetStateAction<
+          RandomMetaRecipe[]
+        > = [
+          // {
+          //   title: "",
+          //   sourceUrl: "",
+          //   readyInMinutes: null,
+          //   image: "",
+          //   summary: "",
+          //   instructions: "",
+          // },
+        ];
+        {
+          recipes.map(
+            (recipe: {
+              title: string;
+              sourceUrl: string;
+              readyInMinutes: number;
+              image: string;
+              summary: string;
+              instructions: string;
+            }) => {
+              // setRandomRecipeDataMeta({
+              //   title: recipe["title"],
+              //   sourceUrl: recipe["sourceUrl"],
+              //   readyInMinutes: recipe["readyInMinutes"],
+              //   image: recipe["image"],
+              //   summary: recipe["summary"],
+              //   instructions: recipe["instructions"],
+              // });
+              randomRecipeDataMetaArray.push(recipe);
+            }
+          );
+          setRandomRecipeDataMeta(randomRecipeDataMetaArray);
+        }
         const extendedIngredients = data["recipes"][0]["extendedIngredients"];
         const randomRecipeArray = [{ ingredientString: "" }];
-        const randomRecipeDataMetaArray = [
-          {
-            randomMetaTitle: title,
-            randomMetaSourceUrl: sourceUrl,
-            randomMetaReadyInMinutes: readyInMinutes,
-            randomMetaImage: image,
-            randomMetaSummary: summary,
-            randomMetaInstructions: instructions,
-          },
-        ];
-        setRandomRecipeDataMeta(randomRecipeDataMetaArray);
+        // const randomRecipeDataMetaArray = [
+        //   {
+        //     randomMetaTitle: title,
+        //     randomMetaSourceUrl: sourceUrl,
+        //     randomMetaReadyInMinutes: readyInMinutes,
+        //     randomMetaImage: image,
+        //     randomMetaSummary: summary,
+        //     randomMetaInstructions: instructions,
+        //   },
+        // ];
+        // setRandomRecipeDataMeta(randomRecipeDataMetaArray);
         {
           extendedIngredients.map((ingredient: { original: string }) => {
             randomRecipeArray.push({ ingredientString: ingredient.original });
           });
+          console.log(randomRecipeArray);
           setRandomRecipe(randomRecipeArray);
-          console.log(randomRecipeArray, randomRecipeDataMetaArray);
+          // console.log(randomRecipeArray, randomRecipeDataMetaArray);
         }
         return data;
       })
       .then((data) => {
         console.log(data);
-        setRandomRecipeDataMeta([
-          {
-            randomMetaTitle: data[0]["recipes"]["title"],
-            randomMetaSourceUrl: data[0]["recipes"]["sourceUrl"],
-            randomMetaReadyInMinutes: data[0]["recipes"]["readyInMinutes"],
-            randomMetaImage: data[0]["recipes"]["image"],
-            randomMetaSummary: data[0]["recipes"]["summary"],
-            randomMetaInstructions: data[0]["recipes"]["instructions"],
-          },
-        ]);
+        // setRandomRecipeDataMeta([
+        //   {
+        //     title: data[0]["recipes"]["title"],
+        //     sourceUrl: data[0]["recipes"]["sourceUrl"],
+        //     readyInMinutes: data[0]["recipes"]["readyInMinutes"],
+        //     image: data[0]["recipes"]["image"],
+        //     summary: data[0]["recipes"]["summary"],
+        //     instructions: data[0]["recipes"]["instructions"],
+        //   },
+        // ]);
       })
       .catch(() => {
         console.error("error");
@@ -149,24 +174,22 @@ const RandomRecipe: FC = () => {
             return (
               <div>
                 <div>
-                  <a href={randomMeta.randomMetaSourceUrl}>
-                    <h1 className="recipeTitleLink">
-                      {randomMeta.randomMetaTitle}
-                    </h1>
+                  <a href={randomMeta.sourceUrl}>
+                    <h1 className="recipeTitleLink">{randomMeta.title}</h1>
                   </a>
                   <h6 className="readyInHeader">
-                    Ready in {randomMeta.randomMetaReadyInMinutes} minutes
+                    Ready in {randomMeta.readyInMinutes} minutes
                   </h6>
                   <img
                     className="randomMetaImage"
-                    src={randomMeta.randomMetaImage}
+                    src={randomMeta.image}
                     alt=""
                   />
                   <h1>Summary</h1>
                   <div
                     className="summaryParagraph"
                     dangerouslySetInnerHTML={{
-                      __html: randomMeta.randomMetaSummary,
+                      __html: randomMeta.summary,
                     }}
                   />
                   <br></br>
@@ -174,7 +197,7 @@ const RandomRecipe: FC = () => {
                   <div
                     className="instructionsParagraph"
                     dangerouslySetInnerHTML={{
-                      __html: randomMeta.randomMetaInstructions,
+                      __html: randomMeta.instructions,
                     }}
                   />
                 </div>
