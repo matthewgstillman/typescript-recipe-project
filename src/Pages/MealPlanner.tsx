@@ -31,14 +31,14 @@ const MealPlanner: FC = () => {
   ]);
   const [nutrientData, setNutrientData] = useState<Nutrients[]>([
     {
-      calories: 2000.09,
-      protein: 44.86,
-      fat: 64.43,
-      carbohydrates: 166.67,
+      calories: null,
+      protein: null,
+      fat: null,
+      carbohydrates: null,
     },
   ]);
-  const [calories, setCalories] = useState<number>(2000);
-  const [dietType, setDietType] = useState<string>("vegetarian");
+  const [calories, setCalories] = useState<number | null>(null);
+  const [dietType, setDietType] = useState<string | "">("");
   const [mealPlanSubmitted, setMealPlanSubmitted] = useState<boolean>(false);
   const [url, setUrl] = useState<string>(
     `https://api.spoonacular.com/mealplanner/generate?apiKey=${apiKey}&timeFrame=day&targetCalories=${calories}&diet=${dietType}`
@@ -69,6 +69,43 @@ const MealPlanner: FC = () => {
       .then((data) => {
         // setMealData(data);
         console.log(data);
+        const meals = data["meals"];
+        const nutrients = data["nutrients"];
+        setNutrientData([
+          {
+            calories: Math.round(nutrients["calories"]),
+            protein: Math.round(nutrients["protein"]),
+            fat: Math.round(nutrients["protein"]),
+            carbohydrates: Math.round(nutrients["carbohydrates"]),
+          },
+        ]);
+        {
+          meals.map(
+            (meal: {
+              id: number;
+              imageType: string;
+              readyInMinutes: number;
+              servings: number;
+              sourceUrl: string;
+              title: string;
+            }) =>
+              setMealData([
+                ...mealData,
+                {
+                  id: meal.id,
+                  imageType: meal.imageType,
+                  readyInMinutes: meal.readyInMinutes,
+                  servings: meal.servings,
+                  sourceUrl: meal.sourceUrl,
+                  title: meal.title,
+                },
+              ])
+          );
+        }
+        return mealData;
+      })
+      .then((mealData) => {
+        console.log(mealData);
       })
       .catch(() => {
         console.log("error");
@@ -76,17 +113,20 @@ const MealPlanner: FC = () => {
   };
 
   const handleCalorieChange = (event: FormEvent<HTMLSelectElement>) => {
-    console.log(event.currentTarget.value);
+    console.log(typeof event.currentTarget.value);
     // setCalories(event.currentTarget.value);
+    let calorieNumber = parseInt(event.currentTarget.value);
+    console.log(`Calorie Number: ${calorieNumber}`);
+    setCalories(calorieNumber);
     setUrl(
-      `https://api.spoonacular.com/recipes/random?apiKey=${apiKey}&number=1&tags=${event.currentTarget.value}&diet=${dietType}`
+      `https://api.spoonacular.com/recipes/random?apiKey=${apiKey}&number=1&tags=${calories}&diet=${dietType}`
     );
-    console.log(`URL is now: ${url}\nCalorie numbe is now: ${calories}`);
+    console.log(`URL is now: ${url}\nCalorie number is now: ${calories}`);
     getMealData();
   };
 
   const handleDietChange = (event: FormEvent<HTMLSelectElement>) => {
-    console.log(event.currentTarget.value);
+    console.log(typeof event.currentTarget.value);
     setDietType(event.currentTarget.value);
     setUrl(
       `https://api.spoonacular.com/recipes/random?apiKey=${apiKey}&number=1&tags=${calories}&diet=${dietType}`
@@ -117,7 +157,7 @@ const MealPlanner: FC = () => {
         </select>
         <br />
         <h3>Add dietary restrictions (Optional)</h3>
-        <select placeholder="Diet Type" onChange={handleDietChange}>
+        <select placeholder="Diet Type" onChange={(e) => handleDietChange(e)}>
           <option value="">None</option>
           <option value="gluten-free">Gluten Free</option>
           <option value="keto">Keto</option>
@@ -142,6 +182,52 @@ const MealPlanner: FC = () => {
           )} */}
         </h1>
         {/* {mealData && <MealList mealData={mealData} />} */}
+        {/* {mealData && mealData.map((meal)) => {
+         return(
+          <h1>{meal.id}</h1>
+         )
+        }} */}
+        {/* {mealData[1]["title"]} */}
+        {nutrientData.map((nutrients) => {
+          return (
+            <div>
+              <h1>Meal Plan Nutrients</h1>
+              {calories && dietType !== null ? (
+                <h6>
+                  {calories} calorie {dietType} meal plan
+                </h6>
+              ) : (
+                <></>
+              )}
+              {nutrients.calories !== null ? (
+                <h6 className="mealPlanHeader">
+                  {nutrients.calories} calories
+                </h6>
+              ) : (
+                <></>
+              )}
+              {nutrients.carbohydrates !== null ? (
+                <h6 className="mealPlanHeader">
+                  {nutrients.carbohydrates} grams carbohydrates
+                </h6>
+              ) : (
+                <> </>
+              )}
+              {nutrients.fat !== null ? (
+                <h6 className="mealPlanHeader">{nutrients.fat} grams fat</h6>
+              ) : (
+                <></>
+              )}
+              {nutrients.protein !== null ? (
+                <h6 className="mealPlanHeader">
+                  {nutrients.protein} grams protein
+                </h6>
+              ) : (
+                <></>
+              )}
+            </div>
+          );
+        })}
       </section>
     </div>
   );

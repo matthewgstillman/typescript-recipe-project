@@ -194,3 +194,10 @@ a:hover {
 .readyInHeader {
   text-align: center;
 }
+
+.mealPlanHeader {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}

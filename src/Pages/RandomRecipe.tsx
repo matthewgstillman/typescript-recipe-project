@@ -82,63 +82,17 @@ const RandomRecipe: FC = () => {
           },
         ];
         setRandomRecipeDataMeta(randomRecipeDataMetaArray);
-        // {
-        //   randomRecipeDataMetaArray.push({
-        //     randomMetaTitle: data[0]["recipes"]["title"],
-        //     randomMetaSourceUrl: data[0]["recipes"]["sourceUrl"],
-        //     randomMetaReadyInMinutes: data[0]["recipes"]["readyInMinutes"],
-        //     randomMetaImage: data[0]["recipes"]["image"],
-        //     randomMetaSummary: data[0]["recipes"]["summary"],
-        //     randomMetaInstructions: data[0]["recipes"]["instructions"],
-        //   });
-        //   console.log(randomRecipeDataMetaArray);
-        // }
         {
           extendedIngredients.map((ingredient: { original: string }) => {
             randomRecipeArray.push({ ingredientString: ingredient.original });
           });
           setRandomRecipe(randomRecipeArray);
           console.log(randomRecipeArray, randomRecipeDataMetaArray);
-          // console.log(
-          //   `Empty Random recipe Data meta array: ${randomRecipeDataMetaArray}`
-          // );
         }
-        // randomRecipeDataMetaArray.push({
-        //   randomMetaTitle: data[0]["recipes"]["title"],
-        //   randomMetaSourceUrl: data[0]["recipes"]["sourceUrl"],
-        //   randomMetaReadyInMinutes: data[0]["recipes"]["readyInMinutes"],
-        //   randomMetaImage: data[0]["recipes"]["image"],
-        //   randomMetaSummary: data[0]["recipes"]["summary"],
-        //   randomMetaInstructions: data[0]["recipes"]["instructions"],
-        // });
-        // setRandomRecipeDataMeta(randomRecipeDataMetaArray, () => {
-        //   return(
-        //     console.log(randomRecipeDataMeta);
-        //   )
-        // });
-        // console.log(randomRecipeDataMetaArray);
         return data;
       })
       .then((data) => {
         console.log(data);
-        // const randomRecipeDataMetaArray = [
-        //   {
-        //     randomMetaTitle: "",
-        //     randomMetaSourceUrl: "",
-        //     randomMetaReadyInMinutes: "",
-        //     randomMetaImage: "",
-        //     randomMetaSummary: "",
-        //     randomMetaInstructions: "",
-        //   },
-        // ];
-        // randomRecipeDataMetaArray.push({
-        //   randomMetaTitle: data[0]["recipes"]["title"],
-        //   randomMetaSourceUrl: data[0]["recipes"]["sourceUrl"],
-        //   randomMetaReadyInMinutes: data[0]["recipes"]["readyInMinutes"],
-        //   randomMetaImage: data[0]["recipes"]["image"],
-        //   randomMetaSummary: data[0]["recipes"]["summary"],
-        //   randomMetaInstructions: data[0]["recipes"]["instructions"],
-        // });
         setRandomRecipeDataMeta([
           {
             randomMetaTitle: data[0]["recipes"]["title"],
