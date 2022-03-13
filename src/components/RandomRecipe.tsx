@@ -1,6 +1,6 @@
 import React, { useState, FC, FormEvent } from "react";
 import NavBarComponent from "./NavBarComponent";
-import { Container } from "react-bootstrap";
+import { Container, Button } from "react-bootstrap";
 import "../index.css";
 export interface Recipe {
   ingredientString: string | "";
@@ -125,7 +125,7 @@ const RandomRecipe: FC = () => {
             return (
               <div>
                 <div>
-                  <a href={randomMeta.sourceUrl}>
+                  <a className="recipeLink" href={randomMeta.sourceUrl}>
                     <h1 className="recipeTitleLink">{randomMeta.title}</h1>
                   </a>
                   {randomMeta.readyInMinutes !== null ? (
@@ -161,7 +161,7 @@ const RandomRecipe: FC = () => {
                   <br></br>
                   {randomMeta.instructions !== "" ? (
                     <div>
-                      {/* <h1>Instructions</h1> */}
+                      <h1>Instructions</h1>
                       <div
                         className="instructionsParagraph"
                         dangerouslySetInnerHTML={{
