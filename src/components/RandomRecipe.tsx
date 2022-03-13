@@ -37,24 +37,21 @@ const RandomRecipe: FC = () => {
       extendedIngredients: "",
     },
   ]);
+  const [recipeSubmitted, setRecipeSubmitted] = useState<boolean>(false);
 
   const handleCuisineChange = (event: FormEvent<HTMLSelectElement>) => {
     const inputValue: string = event.currentTarget.value;
-    console.log(event.currentTarget.value);
     setCuisineType(event.currentTarget.value);
     setUrl(
       `https://api.spoonacular.com/recipes/random?apiKey=${apiKey}&number=1&tags=${inputValue}`
     );
-    console.log(`URL is now: ${url}\nCuisine type is now: ${cuisineType}`);
   };
 
   const getRandomRecipe = () => {
     fetch(url)
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
         const recipes = data["recipes"];
-        console.log(recipes);
         const randomRecipeDataMetaArray: React.SetStateAction<
           RandomMetaRecipe[]
         > = [];
@@ -69,44 +66,35 @@ const RandomRecipe: FC = () => {
               instructions: string;
               extendedIngredients: Recipe[];
             }) => {
-              console.log(recipe["extendedIngredients"]);
               randomRecipeDataMetaArray.push(recipe);
             }
           );
-          console.log(randomRecipeDataMetaArray[0]["extendedIngredients"]);
           setRandomRecipeDataMeta(randomRecipeDataMetaArray);
         }
 
-        console.log(randomRecipeDataMeta);
-
         const fullIngredients = data["recipes"][0]["extendedIngredients"];
-        console.log(fullIngredients);
         const randomRecipeArray = [{ ingredientString: "" }];
         {
           fullIngredients.map((ingredient: { original: string }) => {
             randomRecipeArray.push({ ingredientString: ingredient.original });
           });
-          // console.log(randomRecipeArray);
           setRandomRecipe(randomRecipeArray);
-          console.log(randomRecipeDataMeta);
-          // console.log(randomRecipeArray, randomRecipeDataMetaArray);
+          setRecipeSubmitted(true);
         }
         return data;
       })
       .catch(() => {
         console.error("error");
       });
-    console.log(randomRecipeDataMeta);
   };
 
   return (
     <div>
       <NavBarComponent />
       <Container>
-        <h1 className="randomRecipeHeader">Random Recipe Data</h1>
-        <h3 className="selectHeader">
-          Select Cuisine and Meal Type (Optional)
-        </h3>
+        <h1 className="randomRecipeHeader">Random Recipe Generator</h1>
+        <br />
+        <h3 className="selectHeader">Select Cuisine Type (Optional)</h3>
         <select className="selectForm" onChange={(e) => handleCuisineChange(e)}>
           <option value="" disabled selected>
             Select cuisine type
@@ -126,9 +114,11 @@ const RandomRecipe: FC = () => {
           <option value="vietnamese">Vietnamese</option>
         </select>
         <br></br>
+        <br />
         <button className="randomRecipeButton" onClick={getRandomRecipe}>
           Get Random Recipe
         </button>
+        <br></br>
         <br></br>
         {randomRecipeDataMeta &&
           randomRecipeDataMeta.map((randomMeta) => {
@@ -156,6 +146,7 @@ const RandomRecipe: FC = () => {
                   )}
                   {randomMeta.summary !== "" ? (
                     <div>
+                      <br />
                       <h1>Summary</h1>
                       <div
                         className="summaryParagraph"
@@ -170,7 +161,7 @@ const RandomRecipe: FC = () => {
                   <br></br>
                   {randomMeta.instructions !== "" ? (
                     <div>
-                      <h1>Instructions</h1>
+                      {/* <h1>Instructions</h1> */}
                       <div
                         className="instructionsParagraph"
                         dangerouslySetInnerHTML={{
@@ -182,14 +173,11 @@ const RandomRecipe: FC = () => {
                     <></>
                   )}
                 </div>
-                <br />
-                <br />
               </div>
             );
           })}
         <br />
-        <br />
-        <h1>Ingredients</h1>
+        {recipeSubmitted == true ? <h1>Ingredients</h1> : <></>}
         {randomRecipe &&
           randomRecipe.map((random) => {
             return (
