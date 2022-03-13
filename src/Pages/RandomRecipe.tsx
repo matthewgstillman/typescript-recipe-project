@@ -14,14 +14,12 @@ export interface RandomMetaRecipe {
   summary: string | "";
   instructions: string | "";
   extendedIngredients?: Recipe[] | "";
-  // randomMetaRecipe?: Recipe | "";
 }
-
 const RandomRecipe: FC = () => {
   const apiKey: string | undefined = process.env.REACT_APP_API_KEY;
   const [cuisineType, setCuisineType] = useState<string | "">("");
   const [url, setUrl] = useState<string>(
-    `https://api.spoonacular.com/recipes/random?apiKey=${apiKey}&number=3&tags=${cuisineType}`
+    `https://api.spoonacular.com/recipes/random?apiKey=${apiKey}&number=1&tags=${cuisineType}`
   );
   const [randomRecipe, setRandomRecipe] = useState<Recipe[]>([
     { ingredientString: "" },
@@ -39,14 +37,13 @@ const RandomRecipe: FC = () => {
       extendedIngredients: "",
     },
   ]);
-  const [recipeTitle, setRecipeTitle] = useState<string | "">("");
 
   const handleCuisineChange = (event: FormEvent<HTMLSelectElement>) => {
     const inputValue: string = event.currentTarget.value;
     console.log(event.currentTarget.value);
     setCuisineType(event.currentTarget.value);
     setUrl(
-      `https://api.spoonacular.com/recipes/random?apiKey=${apiKey}&number=3&tags=${inputValue}`
+      `https://api.spoonacular.com/recipes/random?apiKey=${apiKey}&number=1&tags=${inputValue}`
     );
     console.log(`URL is now: ${url}\nCuisine type is now: ${cuisineType}`);
   };
@@ -76,45 +73,14 @@ const RandomRecipe: FC = () => {
               randomRecipeDataMetaArray.push(recipe);
             }
           );
-          console.log(randomRecipeDataMetaArray);
+          console.log(randomRecipeDataMetaArray[0]["extendedIngredients"]);
           setRandomRecipeDataMeta(randomRecipeDataMetaArray);
         }
 
-        console.log(randomRecipeDataMeta[0]["extendedIngredients"]);
-        //Newness
-        // {
-        //   recipes.map((recipe: { extendedIngredients: {} }) => {
-        //     console.log(recipe["extendedIngredeints"]);
-        //   });
-        // }
-        //Newness
-        const ingredientArray = [
-          {
-            0: data["recipes"][0]["extendedIngredients"],
-            1: data["recipes"][1]["extendedIngredients"],
-            2: data["recipes"][2]["extendedIngredients"],
-          },
-        ];
-        // {
-        //   data.recipes.map(
-        //     (
-        //       recipe: { extendedIngredients: { original: string } },
-        //       index: number
-        //       // extendedIngredients: { original: string }
-        //     ) => {
-        //       console.log(recipe["extendedIngredients"]);
-        //       console.log(index);
-        //       // {recipe["extendedIngredients"].map((ingredient: string) => {
-
-        //       // })}
-        //       ingredientArray[index] = recipe["extendedIngredients"];
-        //     }
-        //   );
-        // }
-
-        console.log(ingredientArray);
+        console.log(randomRecipeDataMeta);
 
         const fullIngredients = data["recipes"][0]["extendedIngredients"];
+        console.log(fullIngredients);
         const randomRecipeArray = [{ ingredientString: "" }];
         {
           fullIngredients.map((ingredient: { original: string }) => {
@@ -122,27 +88,14 @@ const RandomRecipe: FC = () => {
           });
           // console.log(randomRecipeArray);
           setRandomRecipe(randomRecipeArray);
+          console.log(randomRecipeDataMeta);
           // console.log(randomRecipeArray, randomRecipeDataMetaArray);
         }
         return data;
       })
-      // .then((data) => {
-      //   console.log(data);
-      //   // setRandomRecipeDataMeta([
-      //   //   {
-      //   //     title: data[0]["recipes"]["title"],
-      //   //     sourceUrl: data[0]["recipes"]["sourceUrl"],
-      //   //     readyInMinutes: data[0]["recipes"]["readyInMinutes"],
-      //   //     image: data[0]["recipes"]["image"],
-      //   //     summary: data[0]["recipes"]["summary"],
-      //   //     instructions: data[0]["recipes"]["instructions"],
-      //   //   },
-      //   // ]);
-      // })
       .catch(() => {
         console.error("error");
       });
-    console.log(`After method: ${randomRecipeDataMeta}`);
     console.log(randomRecipeDataMeta);
   };
 
@@ -167,7 +120,6 @@ const RandomRecipe: FC = () => {
           <option value="jewish">Jewish</option>
           <option value="korean">Korean</option>
           <option value="mediterranean">Mediterranean</option>
-          <option value="mexican">Mexican</option>
           <option value="southern">Southern</option>
           <option value="spanish">Spanish</option>
           <option value="thai">Thai</option>
@@ -178,9 +130,8 @@ const RandomRecipe: FC = () => {
           Get Random Recipe
         </button>
         <br></br>
-        <h1>Recipe Title: {recipeTitle}</h1>
         {randomRecipeDataMeta &&
-          randomRecipeDataMeta.map((randomMeta, index) => {
+          randomRecipeDataMeta.map((randomMeta) => {
             return (
               <div>
                 <div>
@@ -230,25 +181,6 @@ const RandomRecipe: FC = () => {
                   ) : (
                     <></>
                   )}
-                  {/* <div>
-                    <h1>Ingredients</h1>
-                    {randomMeta.extendedIngredients &&
-                      randomMeta.extendedIngredients[index][0]}
-                  </div> */}
-                  {/* <h1>Ingredients</h1>
-                  {randomMeta.extendedIngredients &&
-                    randomMeta.extendedIngredients.map((ingredient) => {
-                      {
-                        ingredient.ingredientString !== "" ? (
-                          <h6> {ingredient.ingredientString}</h6>
-                        ) : (
-                          <></>
-                        );
-                      }
-                    })} */}
-                  {/* <div>
-                      <h1>{randomMeta.extendedIngredients && randomMeta.extendedIngredients.0}</h1>
-                    </div> */}
                 </div>
                 <br />
                 <br />
